@@ -1,4 +1,4 @@
-name: OZIP Decrypter by TechyMinati..
+name: OZIP Decrypter by TechyMinati...
 
 on:
 #  release:
@@ -14,8 +14,9 @@ on:
     types: [started]
 
 env:
-  FIRMWARE_LINK: https://download.c.realme.com/osupdate/CPH1861EX_11_OTA_0500_all_fLuS0Ipoe93t.ozip
-  FIRMWARE_NAME: CPH1861EX_11_OTA_0500_all_fLuS0Ipoe93t.ozip
+  FIRMWARE_LINK: https://download.c.realme.com/osupdate/RMX2151PU_11_OTA_0710_all_ybwVKLp8S7lZ.ozip #edit link here...
+  FIRMWARE_NAME: RMX2151PU_11_OTA_0710_all_ybwVKLp8S7lZ.ozip  #edit file name here, you can find the name of file from link itself...
+  FINAL_ZIP_NAME: THE_NAME_OF_ZIP_YOU_WANT.zip #This will be the name of final zip which will be uploaded. You can leave it unchanged.
   TZ: Asia/Kolkata
 
 jobs:
@@ -26,7 +27,7 @@ jobs:
        - name: Checkout
          uses: actions/checkout@master
          
-       - name: Downloading Ozip Now.. 
+       - name: Downloading Ozip Now
          run: |
             sudo -E apt-get -qq update
             sudo apt install aria2
@@ -40,9 +41,13 @@ jobs:
              sudo -H pip install setuptools wheel docopt pycryptodome
              wget https://raw.githubusercontent.com/techyminati/oppo_ozip_decrypt/master/ozipdecrypt.py
              sudo python ozipdecrypt.py $FIRMWARE_NAME
-             
-       - name: Upload Decrypted Zip
+
+       - name: ziping decrypted file
          run: |
-              touch links.txt
-              curl -sL https://git.io/file-transfer | sh
-              ./transfer wet *.zip
+             cd out
+             sudo zip -r $FINAL_ZIP_NAME * #Don't edit it. Don't edit it and Don't edit this line.
+
+       - name: Upload Decrypted zip
+         run: |
+             cd out
+             curl https://bashupload.com/ -T $FINAL_ZIP_NAME #file will be uploaded to bashupload, so mirror it if you are decrypting for community uses.
